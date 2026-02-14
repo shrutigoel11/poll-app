@@ -121,6 +121,7 @@ def vote(poll_id):
 def on_join(data):
     join_room(data["poll_id"])
 
+
 import os
 
 if __name__ == "__main__":
