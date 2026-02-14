@@ -159,9 +159,10 @@ No manual refresh required.
 
 ## 🌍 Deployment (Suggested)
 
-* Backend: Render / Railway
-* Database: SQLite (or MongoDB/PostgreSQL for production)
+* Backend: Render
+* Database: SQLite 
 * Frontend: Served via Flask templates
 
 ---
+
 
