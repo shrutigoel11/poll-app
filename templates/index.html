@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create Poll</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ff7e5f, #feb47b);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .box {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      width: 420px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 6px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .create-btn {
+      background: #ff7e5f;
+      color: white;
+    }
+
+    .add-btn {
+      background: #4caf50;
+      color: white;
+    }
+
+    .link-box {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    a {
+      color: #ff7e5f;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Create a Poll</h2>
+
+    <input id="question" placeholder="Enter your question">
+
+    <div id="options-container">
+      <input class="option" placeholder="Option 1">
+      <input class="option" placeholder="Option 2">
+    </div>
+
+    <button class="add-btn" onclick="addOption()">+ Add More Option</button>
+    <button class="create-btn" onclick="createPoll()">Create Poll</button>
+
+    <div class="link-box" id="link"></div>
+  </div>
+
+<script>
+let optionCount = 2;
+
+function addOption() {
+  optionCount++;
+  const container = document.getElementById("options-container");
+  const input = document.createElement("input");
+  input.className = "option";
+  input.placeholder = "Option " + optionCount;
+  container.appendChild(input);
+}
+
+async function createPoll() {
+  const question = document.getElementById("question").value;
+  const options = Array.from(document.getElementsByClassName("option"))
+                       .map(o => o.value)
+                       .filter(o => o.trim() !== "");
+
+  if (!question || options.length < 2) {
+    alert("Please enter a question and at least 2 options.");
+    return;
+  }
+
+  const res = await fetch("/create", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({ question, options })
+  });
+
+  const data = await res.json();
+  document.getElementById("link").innerHTML =
+    'Share Link: <a href="' + data.link + '">' + data.link + '</a>';
+}
+</script>
+</body>
+</html>
